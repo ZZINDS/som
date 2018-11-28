@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load myinclusion %}
+{% block content %}
+<!-- saved from url=(0020)http://try.redis.io/ -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Wed Shell</title>
+<script src="/static/js/jquery.min.js" type="application/x-javascript"></script>
+    <script type="text/javascript">//<![CDATA[
+    $(function () {
+        $('#backup_all').click(function () {
+            var socket = new WebSocket("ws://" + window.location.host + "/xshell/");
+            socket.onopen = function () {
+                console.log('WebSocket open');//成功连接上Websocket
+                socket.send($('#input').val());//发送数据到服务端
+            };
+            socket.onmessage = function (e) {
+                console.log('message: ' + e.data);//打印服务端返回的数据
+                $('#messagecontainer').prepend('<p><pre>' + e.data + '</pre></p>');
+                $('#messagecontainer').prepend('<hr />');
+            };
+        });
+    });
+    </script>
+  </head>
+
+<div class="right_col" role="main">
+                <div class="x_panel">
+                    <div class="x_title">
+    <div id="toolbar" style="display: block;">
+      <input id="input" spellcheck="false">
+                <div class="ln_solid"></div>
+        <div class="form-group">
+
+                <button type="button" id="backup_all" > 执行命令</button>
+            </div>
+        </div>
+    </div>
+        <div id="messagecontainer" style="margin: 20px;"></div>
+
+                    </div>
+                </div>
+
+</div>
+
+
+</html>
+{% endblock %}
